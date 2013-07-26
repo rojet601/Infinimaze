@@ -15,6 +15,7 @@ import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.data.DataException;
+import com.sk89q.worldedit.schematic.SchematicFormat;
 
 public class MazeBuilder {
 	MazeBlock[][] maze;
@@ -128,7 +129,7 @@ public class MazeBuilder {
 		CuboidClipboard cc = new CuboidClipboard(new Vector(7, 7, 7));
 		
 		try {
-			cc = CuboidClipboard.loadSchematic(new File(Infinimaze.getPlugin().getDataFolder() + fileName));
+			cc = SchematicFormat.MCEDIT.load(new File(Infinimaze.getPlugin().getDataFolder() + fileName));
 		} catch(DataException e) {
 			e.printStackTrace();
 		} catch(IOException e) {
