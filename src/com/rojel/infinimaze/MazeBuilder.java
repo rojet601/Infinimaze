@@ -88,7 +88,7 @@ public class MazeBuilder {
 	}
 	
 	public CuboidClipboard loadClipboardForBlock(MazeBlock block) {
-		CuboidClipboard cc = new CuboidClipboard(new Vector(7, 7, 7));
+		CuboidClipboard cc = null;
 		
 		if(block.numberOfWalls() == 0) {
 			cc = loadSchematic("cross.schematic");
