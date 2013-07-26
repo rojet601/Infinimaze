@@ -1,0 +1,7 @@
+name: Infinimaze
+main: com.rojel.infinimaze.Infinimaze
+version: 1.0
+author: rojet601
+commands:
+  maze:
+    description: Creates a maze.
