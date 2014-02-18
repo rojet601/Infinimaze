@@ -16,7 +16,7 @@ public class Infinimaze extends JavaPlugin {
 		if(label.equalsIgnoreCase("maze")) {
 			if(sender instanceof Player) {
 				MazeBuilder builder = new MazeBuilder();
-				builder.buildMaze(10, 10);
+				builder.buildMaze(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
 				Player player = (Player) sender;
 				builder.placeInWorld(player.getWorld(), player.getLocation());
 			} else {

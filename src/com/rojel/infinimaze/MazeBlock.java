@@ -105,7 +105,7 @@ public class MazeBlock {
 			otherBlock.setWall(Wall.SOUTH, false);
 			setWall(Wall.NORTH, false);
 		}
-		if(otherBlock.getY() < getY()) {
+		if(otherBlock.getY() > getY()) {
 			otherBlock.setWall(Wall.NORTH, false);
 			setWall(Wall.SOUTH, false);
 		}

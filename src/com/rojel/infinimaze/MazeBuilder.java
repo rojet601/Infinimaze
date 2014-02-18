@@ -79,7 +79,11 @@ public class MazeBuilder {
 			for(int y = 0; y < maze[0].length; y++) {
 				CuboidClipboard cc = loadClipboardForBlock(maze[x][y]);
 				try {
-					cc.paste(es, new Vector(x * 7 + corner.getBlockX(), corner.getBlockY(), y * 7 + corner.getBlockZ()), false);
+					int worldX = x * 7 + corner.getBlockX();
+					int worldY = corner.getBlockY();
+					int worldZ = y * 7 + corner.getBlockZ();
+					Vector worldVector = new Vector(worldX, worldY, worldZ);
+					cc.place(es, worldVector, false);
 				} catch(MaxChangedBlocksException e) {
 					e.printStackTrace();
 				}
@@ -92,11 +96,9 @@ public class MazeBuilder {
 		
 		if(block.numberOfWalls() == 0) {
 			cc = loadSchematic("cross.schematic");
-			cc.setOrigin(new Vector(3, 3, 3));
 		}
 		if(block.numberOfWalls() == 1) {
 			cc = loadSchematic("junction.schematic");
-			cc.setOrigin(new Vector(3, 3, 3));
 			if(block.getWall(Wall.WEST))
 				cc.rotate2D(180);
 			if(block.getWall(Wall.SOUTH))
@@ -107,12 +109,10 @@ public class MazeBuilder {
 		if(block.numberOfWalls() == 2) {
 			if((block.getWall(Wall.NORTH) && block.getWall(Wall.SOUTH)) || (block.getWall(Wall.EAST) && block.getWall(Wall.WEST))) {
 				cc = loadSchematic("tunnel.schematic");
-				cc.setOrigin(new Vector(3, 3, 3));
 				if(block.getWall(Wall.EAST))
 					cc.rotate2D(90);
 			} else {
 				cc = loadSchematic("corner.schematic");
-				cc.setOrigin(new Vector(3, 3, 3));
 				if(block.getWall(Wall.EAST) && block.getWall(Wall.SOUTH))
 					cc.rotate2D(90);
 				if(block.getWall(Wall.WEST) && block.getWall(Wall.SOUTH))
@@ -121,20 +121,35 @@ public class MazeBuilder {
 					cc.rotate2D(270);
 			}
 		}
+		if(block.numberOfWalls() == 3) {
+			cc = loadSchematic("end.schematic");
+			if(block.getWall(Wall.NORTH))
+				cc.rotate2D(90);
+			if(block.getWall(Wall.WEST))
+				cc.rotate2D(180);
+			if(block.getWall(Wall.SOUTH))
+				cc.rotate2D(270);
+		}
+		if(block.numberOfWalls() == 4) {
+			cc = loadSchematic("room.schematic");
+		}
 		
 		return cc;
 	}
 	
 	public CuboidClipboard loadSchematic(String fileName) {
-		CuboidClipboard cc = new CuboidClipboard(new Vector(7, 7, 7));
+		CuboidClipboard cc = null;
 		
 		try {
-			cc = SchematicFormat.MCEDIT.load(new File(Infinimaze.getPlugin().getDataFolder() + fileName));
+			cc = SchematicFormat.MCEDIT.load(new File(Infinimaze.getPlugin().getDataFolder() + File.separator + fileName));
 		} catch(DataException e) {
 			e.printStackTrace();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+		
+		cc.setOrigin(new Vector(0, 0, 0));
+		cc.setOffset(new Vector(0, 0, 0));
 		
 		return cc;
 	}
